@@ -113,21 +113,30 @@ def current_user():
 
 @app.route("/login", methods=["POST"])
 def login():
+   
+   
+   
    try_pword = request.form["password"]
+   try_uname = request.form["username"]
    
    r_code = 200
    d = {}
 
-   query = """SELECT COUNT(*) AS matched FROM users WHERE password=MD5("%s")""" % try_pword
+   query = """SELECT COUNT(*) AS matched, name FROM users WHERE password=MD5("%s") AND name="%s";""" % (try_pword, try_uname)
    cur = g.db.cursor()
+  
+   print query 
    cur.execute(query)
    
-   num_matches = cur.fetchone()["matched"]
+   match = cur.fetchone() 
+   num_matches = match["matched"]
+   matched_uname = match["name"]
    
    if num_matches == 0:
 	  r_code = 401 
 	  d = {"error": "bad password"}
    else:
+	  session["username"] = match["name"]
 	  r_code = 401  # unauthorized
 	  d = {"status": "ok"}
 
@@ -143,11 +152,12 @@ def user_create():
    uname = request.form["username"]
    password = request.form["password"]
 
-   query = """INSERT INTO users(username, password) VALUES("%s", MD5("%s"))""" % (uname, password)
+   query = """INSERT INTO users(name, password) VALUES("%s", MD5("%s"))""" % (uname, password)
     
+   g.db.cursor().execute( query )
+   g.db.commit()
 
-   return query
-	  
+   return flask.jsonify( {"status": "ok"} ) 
 
 if __name__ == '__main__':
 	app.run()
