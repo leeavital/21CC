@@ -1,6 +1,19 @@
-function homeController( $scope, $http ){
-   $scope.message = "Hello world"; 
+angular.module( 'deepLinking', [] ).
+   config( ['$routeProvider', function( $routeProvider ) {
+	  $routeProvider
+		 .when( '/welcome', {templateUrl: 'welcome.html', controller: welcomeCtrl } );
+   } ] );
+
+
+function welcomeCtrl( $scope  ) {
+    
 }
 
-// only need with minification
-// homeController.inject( [ 'scope', 'http' ] );
+WelcomeCntl.$inject = [ '$scope', '$location' ];
+
+
+function AppCntl(){
+
+}
+
+AppCntl.$inject = [ '$scope', '$location' ];
