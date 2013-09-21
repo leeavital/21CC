@@ -32,7 +32,7 @@ def connect_db():
 	
 
 	conn = MySQLdb.connect(host=DATABASE, port=3306, user='test_user',
-						   passwd='mypass', db='Test1234',
+						   passwd='mypass', db='prod',
 						   cursorclass=MySQLdb.cursors.DictCursor)
 	print "CONNECTION: \n\n\n"
 
@@ -69,9 +69,36 @@ def get_ingredients():
 
 @app.route('/user_ratings/<int:id>')
 def view_ratings(id):
-	from neural_net import *
-	x = build_net_for_user(id, g.db)
+	import neural_net as nn
+	x = nn.build_net_for_user(id, g.db)
 	return x
+
+@app.route('/recipes/training')
+def get_training_recipes():
+	r1 = {'id': 1, 'name': 'Pickles',
+				   'ingredients': ['Cucumber', 'Salt',
+				   'Vinegar', 'Water'], 
+				   'description': "It's a pickle"}
+	r2 = {'id': 2, 'name': 'Bread',
+				   'ingredients': ['Salt', 'Yeast',
+				   'Flour', 'Water'], 
+				   'description': "It's bread"}
+	r3 = {'id': 3, 'name': 'Salad',
+				   'ingredients': ['Cucumber', 'Tomato',
+				   'Lettuce', 'Olives', 'Dressing'], 
+				   'description': "It's a salad.  A bad one."}
+	return flask.jsonify({'recipes': [r1, r2, r3]})
+
+
+@app.route('/recipes/training/<int:recipe_id>/<int:rating>')
+def rate_training_recipe(recipe_id, rating):
+	if rating != -1:
+		values = (session['user_id'], recipe_id, rating)
+		query = "INSERT INTO user_ratings VALUES " + str(values)
+		cur = g.db.cursor()
+
+		cur.execute(query)
+		g.db.commit()
 
 @app.route('/recipe/<int:id>')
 def view_recipe(id):

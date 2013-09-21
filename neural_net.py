@@ -18,12 +18,12 @@ def build_net_for_user(uID, connection):
 	cur.execute(ratedRecipesQuery)
 	ratedRecipes = cur.fetchall()
 	
-	ratedRecipes2 = []
+	ratedRecipes2 = {}
 	for x in ratedRecipes:
-		ratedRecipes2.append(int(x['recipeid']))
+		print x
+		ratedRecipes2[int(x['recipeid'])] = x['score']/10.0
 
-
-	recipeQuery = "SELECT * FROM recipetocats where idrecipe in " + str(tuple(ratedRecipes2))
+	recipeQuery = "SELECT * FROM recipes where id in " + str(tuple(ratedRecipes2.keys()))
 	print recipeQuery
 	cur.execute(recipeQuery)
 
@@ -31,16 +31,27 @@ def build_net_for_user(uID, connection):
 
 
 	for recipe in recipes:
-		rating = 1
+		print "RECIPE IS: "+str(recipe)
+		rating = ratedRecipes2[recipe['id']]
 		print recipe
-		scores = [recipe['Tangy'], recipe['Salty'], recipe['MSG'], .5, .5]
+		scores = [recipe['salty'], recipe['sweet'], recipe['spicy'], recipe['savory'], recipe['filling']]
 		ds.addSample(scores, rating)
 
-
+	print ds
 	trainer = BackpropTrainer(net, ds)
-	trainer.trainUntilConvergence()
-
 
 
 	#activate!
-	net.activate(None) #new recipe values
+	xs = 0
+	for x in range(10):
+		trainer.trainUntilConvergence(maxEpochs=100)
+
+		x = net.activate([10,3,7,8,10]) #new recipe values
+		y = net.activate([0,9,1,2,1]) #new recipe values
+		if x > y:
+			xs += 1
+
+
+
+	return str(xs)
+	return Recipe
