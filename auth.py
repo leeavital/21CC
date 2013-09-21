@@ -6,7 +6,7 @@ class User:
 	  self.username = username
 	  self.uid = uid
 
-def log_user_in( username, password ):
+def log_user_in( username, password, session ):
    query = """SELECT COUNT(*) AS matched, name, id  FROM""" + \
 	  """ users WHERE password=MD5("%s") AND name="%s";""" \
 	  % (password, username)
@@ -26,6 +26,8 @@ def log_user_in( username, password ):
    if num_matches == 0:
 	  raise Exception("Bad Password")
    else:
+	  session[ "username"] = matched_uname
+	  session[ "user_id"] = matched_id
 	  return User( matched_uname, matched_id )
 	  
    

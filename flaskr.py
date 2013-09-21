@@ -143,7 +143,7 @@ def current_user():
    d = {}
 
    if "username" in session:
-	  d = {"username": request.session.username}
+	  d = {"username": session["username"]}
    else:
 	  d = {}
 	  r_code = 401 # unauthorized 401
@@ -169,7 +169,7 @@ def login():
 
   
    try:
-	  u = auth.log_user_in( try_uname, try_pword )
+	  u = auth.log_user_in( try_uname, try_pword, session )
 	  r_code = 200
 	  d = {"status": "ok"}
    except Exception as e:
@@ -194,9 +194,46 @@ def user_create():
    g.db.cursor().execute( query )
    g.db.commit()
 
-   u = auth.log_user_in( uname, password )
+   u = auth.log_user_in( uname, password, session )
 
    return flask.jsonify( {"status": "ok"} ) 
+
+
+
+@app.route("/inventory", methods=["GET", "PUT"])
+def inventory():
+   
+   if request.method == "GET":
+	  cur = g.db.cursor()
+   	  cur.execute(   "SELECT * FROM userinventory WHERE uid=%d" % session["user_id"] )  
+   	  
+   	  
+
+   	  r = flask.Response( json.dumps( cur.fetchall() ) )
+
+   	  r.headers[ "Content-Type" ] = "text/javascript"
+   	  return r
+
+   elif request.method == "PUT":
+	  item = request.data
+	  query = """INSERT INTO userinventory(uid, item) VALUES(%d, "%s")""" % (session["user_id"], item)
+	  
+	  g.db.cursor().execute( query ) 
+	  g.db.commit()
+
+	  return flask.jsonify( {"status": "ok" } )
+
+   else:
+	  pass
+
+@app.route( "/inventory/delete/<string:item>" )
+def inventory_delete( item  ):
+   query = """DELETE FROM userinventory WHERE uid=%d and item="%s" """
+   query = query % ( session["user_id"], item )
+   print query
+   g.db.cursor().execute( query )
+   g.db.commit()
+   return flask.jsonify( {"status": "ok"} )
 
 if __name__ == '__main__':
 	app.run()
