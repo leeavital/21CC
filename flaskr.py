@@ -11,7 +11,7 @@ import sys
 from flask import Flask, request, session, g, redirect, url_for, \
 	 abort, render_template, flash
 import json
-
+import flask
 import auth
 
 
@@ -86,8 +86,7 @@ def view_ratings(id):
 
 @app.route('/recipes/training')
 def get_training_recipes():
-	ids = tuple([x for x in range(1,12)])
-	query = "SELECT * FROM recipes where id in " + str(ids)
+	query = "SELECT * from recipes order by rand() limit 10"
 	cur = g.db.cursor()
 	cur.execute(query)
 
