@@ -1,9 +1,12 @@
 import recipe
 import metaInfo
+import json
+
 
 # all the imports
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
+import flask
 
 # configuration
 DATABASE = None  # put a DB here
@@ -38,11 +41,12 @@ def get_ingredients():
 
 @app.route('/recipe/<int:id>')
 def view_recipe(id):
-	query = "SELECT * FROM recipes WHERE ID = " + str(id)  # Please don't SQL inject me
-	# cur = g.db.execute(query)
-	d = {}
-	d['name'] = "SAUCE ON SAUCE ON SAUCE"
-	return render_template('view_recipe.html', **d)
+   query = "SELECT * FROM recipes WHERE ID = " + str(id)  # Please don't SQL inject me
+   # cur = g.db.execute(query)
+   d = {}
+   d['name'] = "SAUCE ON SAUCE ON SAUCE"
+   d['ingredients'] = ['sauce', 'saws']
+   return flask.jsonify(d)
 
 if __name__ == '__main__':
     app.run()
