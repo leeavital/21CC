@@ -4,6 +4,8 @@
 	  <input type="text" ng:model="login_name"  />
 	  <input type="password" ng:model="login_pass"  />
 	  <input type="submit" />
+	  <br />
+	  <div class="error">{{login_error}}</div>
    </fieldset> 
 </form>
 
@@ -15,5 +17,9 @@
 	  <input type="password" ng:model="signup_pass"  />
 	  <input type="password" ng:model="signup_pass2"  />
 	  <input type="submit" />
+
+	  <br />
+
+	  {{sign_up_error}}
    </fieldset> 
 </form>
