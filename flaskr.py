@@ -54,7 +54,7 @@ def homepage():
 def get_ingredients():
 	# execute Query
 	cur = g.db.cursor()
-	cur.execute("SELECT name FROM ingredients")
+	cur.execute("SELECT * FROM ingredients")
 	
 	print "\n\n\n"
 
@@ -63,10 +63,15 @@ def get_ingredients():
 	return render_template('ingredients.html',  **{'ingredients': ingredients})
 
 
+@app.route('/user_ratings/<int:id>')
+def view_ratings(id):
+	from neural_net import *
+	x = build_net_for_user(id, g.db)
+	return x
+
 @app.route('/recipe/<int:id>')
 def view_recipe(id):
    query = "SELECT * FROM recipes WHERE ID = " + str(id)  # Please don't SQL inject me
-   # cur = g.db.execute(query)
    d = {}
    d['name'] = "SAUCE ON SAUCE ON SAUCE"
    d['ingredients'] = ['sauce', 'saws']
