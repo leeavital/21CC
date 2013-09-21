@@ -117,20 +117,27 @@ UsersCntl.$inject = [ '$scope', '$http', '$location' ];
 // TrainingCntl
 // ----------------------------------------------------------------------------
 function TrainingCntl( $scope, $http, $location ) {
+
    $http.get( '/recipes/training' ).success( function( recipes ){
-	  console.log( 'got recipes for training' );
-	  console.log( recipes );
+	  
+	  for( var r in recipes ){
+		 recipes[r].trained = false;
+	  }
+	  
 	  $scope.recipes = recipes;
    });
-
+   
 
    $scope.rateRecipe = function( rId, rating ){
-	  
 	  $http.get( '/recipes/training/' + rId + '/' + rating )
 		 .success( function(){
-			alert( 'ok!' ); 		 	
+			for( var r in $scope.recipes ){
+			   if ( $scope.recipes[r].id == rId ){
+				  console.log( 'found a recipe' );
+				  $scope.recipes[r].trained = true;
+			   }
+			}
 		 });
-
    }
 }
 TrainingCntl.$inject = [ '$scope', '$http', '$location' ];
