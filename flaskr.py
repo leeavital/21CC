@@ -5,6 +5,13 @@ import MySQLdb.cursors
 # all the imports
 from flask import Flask, request, session, g, redirect, url_for, \
 	 abort, render_template, flash
+import json
+
+
+# all the imports
+from flask import Flask, request, session, g, redirect, url_for, \
+     abort, render_template, flash
+import flask
 
 # configuration
 DATABASE = "ec2-54-219-48-12.us-west-1.compute.amazonaws.com"
@@ -57,11 +64,20 @@ def get_ingredients():
 
 @app.route('/recipe/<int:id>')
 def view_recipe(id):
-	query = "SELECT * FROM recipes WHERE ID = " + str(id)  # Please don't SQL inject me
-	# cur = g.db.execute(query)
-	d = {}
-	d['name'] = "SAUCE ON SAUCE ON SAUCE"
-	return render_template('view_recipe.html', **d)
+   query = "SELECT * FROM recipes WHERE ID = " + str(id)  # Please don't SQL inject me
+   # cur = g.db.execute(query)
+   d = {}
+   d['name'] = "SAUCE ON SAUCE ON SAUCE"
+   d['ingredients'] = ['sauce', 'saws']
+   return flask.jsonify(d)
+
+
+@app.route('/recommendations')
+def recommendations():
+   dummy = [ {"id": x, "title": "title " + str(x)} for x in range( 0, 10 ) ]
+   # can't use flask.jsonify because it won't take a list
+   return flask.Response(json.dumps( dummy ),  mimetype='application/json')
+
 
 if __name__ == '__main__':
 	app.run()

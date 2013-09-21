@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html ng-app>
+<html ng-app="deepLinking">
    <head>
 	  <title>Eat.Me</title>
 	  <script type="text/javascript" src="/static/lib/angular.min.js"></script>
@@ -8,9 +8,18 @@
 
    <body>
 
-	  <div ng-controller="homeController">
-		 {{message}}
-	  </div>
+	  <div ng-controller="AppCntl">
+		 <h1>Eat.me</h1>
+		 <h2>Smart eating</h2>
+		 [ <a href="#welcome">Welcome</a> | <a href="#settings">Settings</a> ]
+   	  	 <hr/>
+   	  	 
+		 <span class="partial-info">
+			{{$route.current.template}}
+   	  	 </span>
+   	  	 <div ng-view></div>
+   	  	 <small>Eat Me</small>
+   	  </div>
 
    </body>
 
