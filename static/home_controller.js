@@ -51,6 +51,9 @@ RecipeController.$inject = [ '$scope', '$http', '$routeParams' ];
 function RecommendationController( $scope, $http, $routeParams ){ 
    $http.get( '/recommendations' ).success( function( recs ){
 	  $scope.recommendations = recs;
+	  $scope.hello = function(){
+		 alert( 'hello' );
+	  }
    }); 
 }
 RecommendationController.$inject = [ '$scope', '$http', '$routeParams' ];
