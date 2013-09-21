@@ -9,7 +9,7 @@ def createIngredients():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod")
 	cur = db.cursor()
 	cur.execute('DROP TABLE IF EXISTS ingredients')
-	cur.execute('CREATE TABLE IF NOT EXISTS ingredients (id INT AUTO_INCREMENT, name CHAR(30), type CHAR(30), UNIQUE KEY (name), PRIMARY KEY (id))')
+	cur.execute('CREATE TABLE IF NOT EXISTS ingredients (id INT AUTO_INCREMENT, name CHAR(255), type CHAR(30), UNIQUE KEY (name), PRIMARY KEY (id))')
 
 def createRecipes():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod")
@@ -32,7 +32,7 @@ def createRecipecombo():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod")
 	cur = db.cursor()
 	cur.execute('DROP TABLE IF EXISTS recipecombo')
-	cur.execute('CREATE TABLE IF NOT EXISTS recipecombo (recipeid INT NOT NULL, ingredientid INT NOT NULL, amount FLOAT NOT NULL)')
+	cur.execute('CREATE TABLE IF NOT EXISTS recipecombo (recipeid INT NOT NULL, ingredientid INT NOT NULL, amount CHAR(255) NOT NULL)')
 def populate():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod", cursorclass=MySQLdb.cursors.DictCursor)
 	cur = db.cursor()
