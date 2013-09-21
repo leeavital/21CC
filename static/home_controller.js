@@ -13,8 +13,8 @@ angular.module( 'deepLinking', [] ).
 // ----------------------------------------------------------------------------
 // 
 // ----------------------------------------------------------------------------
-function WelcomeCntl( $scope  ) {
-    
+function WelcomeCntl( $scope, $location  ) {
+       
 }
 WelcomeCntl.$inject = [ '$scope', '$location' ];
 
@@ -24,8 +24,8 @@ WelcomeCntl.$inject = [ '$scope', '$location' ];
 // ----------------------------------------------------------------------------
 // AppCntl -- main driver for the app. Does nothing so far
 // ----------------------------------------------------------------------------
-function AppCntl(){
-
+function AppCntl( $scope, $location ){
+   $location.path( '/users' ); 
 }
 AppCntl.$inject = [ '$scope', '$location' ];
 
