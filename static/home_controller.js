@@ -63,16 +63,50 @@ RecommendationController.$inject = [ '$scope', '$http', '$routeParams' ];
 // ----------------------------------------------------------------------------
 // UserCntl
 // ----------------------------------------------------------------------------
-function UsersCntl( $scope, $http){
+function UsersCntl( $scope, $http, $location){
    $scope.doLogin = function(){
 	  var  loginName = $scope.login_name;
 	  var loginPword = $scope.login_pass;
-	  console.log( 'logging in... ' );
+	  
+	  $http( {
+		 url: '/login',
+		 data:{
+			username: loginName,
+		 	password: loginPword
+		 },
+		 method: 'POST'
+	  }).success( function( response ){
+		 
+		 if( response.status == "ok" ){
+			alert( "successful login" );
+			$location.path( '/welcome' );
+		 }else{
+			$scope.login_error = response.error;
+		 }
+	  } );
    }
 
 
    $scope.doSignUp = function(){
+	  
+	  var name = $scope.signup_name
+	  var pass = $scope.signup_pass
+	  var pass2 = $scope.signup_pass2
+
+	  if( pass != pass2 ){
+		 $scope.sign_up_error = 'passwords do not match';	 
+	  }
+	  else{
+		 $http.post( '/user_create', {
+			username: name,
+			password: pass	
+		 } ).success( function( data ){
+			$location.path( '/training' );
+		 });
+	  }
+	  
+	   
    }
 }
-UsersCntl.$inject = [ '$scope', '$http' ];
+UsersCntl.$inject = [ '$scope', '$http', '$location' ];
 
