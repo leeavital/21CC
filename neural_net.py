@@ -10,9 +10,10 @@ def build_net_for_user(uID, connection):
 	user = cur.fetchone()
 	print user
 
-	net = buildNetwork(5, 10, 1, bias = True)
+	net = buildNetwork(6, 10, 1, bias = True, learningrate=0.03, lrdecay = .99)
 
-	ds = SupervisedDataSet(5, 1)
+
+	ds = SupervisedDataSet(6, 1)
 
 	ratedRecipesQuery  = "SELECT * from userratings where userid = %d" % uID 
 	cur.execute(ratedRecipesQuery)
@@ -34,24 +35,17 @@ def build_net_for_user(uID, connection):
 		print "RECIPE IS: "+str(recipe)
 		rating = ratedRecipes2[recipe['id']]
 		print recipe
-		scores = [recipe['salty'], recipe['sweet'], recipe['spicy'], recipe['savory'], recipe['filling']]
+		scores = [recipe['Salty'], recipe['Meaty'], recipe['Piquant'] , recipe['Bitter'], recipe['Sour'], recipe['Sweet']]
 		ds.addSample(scores, rating)
 
 	print ds
+	
 	trainer = BackpropTrainer(net, ds)
 
+	print trainer.trainUntilConvergence(maxEpochs = 1000)
 
-	#activate!
-	xs = 0
-	for x in range(10):
-		trainer.trainUntilConvergence(maxEpochs=100)
+	x = net.activate([7,2,1,3,3])
+	y = net.activate([6,2,10,3,1])
 
-		x = net.activate([10,3,7,8,10]) #new recipe values
-		y = net.activate([0,9,1,2,1]) #new recipe values
-		if x > y:
-			xs += 1
-
-
-
-	return str(xs)
-	return Recipe
+	print str(x)
+	return str(x > y)
