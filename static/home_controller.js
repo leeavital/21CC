@@ -126,7 +126,10 @@ function TrainingCntl( $scope, $http, $location ) {
 
    $scope.rateRecipe = function( rId, rating ){
 	  
-	  alert( 'rate is not implemented' );
+	  $http.get( '/recipes/training/' + rId + '/' + rating )
+		 .success( function(){
+			alert( 'ok!' ); 		 	
+		 });
 
    }
 }
