@@ -2,6 +2,9 @@ import recipe
 import metaInfo
 import MySQLdb
 import MySQLdb.cursors
+
+
+
 # all the imports
 from flask import Flask, request, session, g, redirect, url_for, \
 	 abort, render_template, flash
@@ -37,7 +40,10 @@ def connect_db():
 
 @app.before_request
 def before_request():
-	g.db = connect_db()
+   try:
+	  g.db = connect_db()
+   except:
+	  print "passed..."
 	
 @app.teardown_request
 def teardown_request(exception):
@@ -138,7 +144,7 @@ def user_create():
    password = request.form["password"]
 
    query = """INSERT INTO users(username, password) VALUES("%s", MD5("%s"))""" % (uname, password)
-   print query
+    
 
    return query
 	  

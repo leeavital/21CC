@@ -3,14 +3,18 @@ angular.module( 'deepLinking', [] ).
 	  $routeProvider
 		 .when( '/welcome', {templateUrl: 'welcome.html', controller: WelcomeCntl} )
 		 .when( '/recipe/:recipeId', {templateUrl: 'recipe.html', controller: RecipeController} )
-		 .when( '/recommendations', {templateUrl: 'recommendations.html', controller: RecommendationController} );
+		 .when( '/recommendations', {templateUrl: 'recommendations.html', controller: RecommendationController} )
+		 .when( '/users', {templateUrl: 'users.html', controller: UsersCntl} );
    }]);
 
 
+
+// ----------------------------------------------------------------------------
+// 
+// ----------------------------------------------------------------------------
 function WelcomeCntl( $scope  ) {
     
 }
-
 WelcomeCntl.$inject = [ '$scope', '$location' ];
 
 
@@ -51,9 +55,24 @@ RecipeController.$inject = [ '$scope', '$http', '$routeParams' ];
 function RecommendationController( $scope, $http, $routeParams ){ 
    $http.get( '/recommendations' ).success( function( recs ){
 	  $scope.recommendations = recs;
-	  $scope.hello = function(){
-		 alert( 'hello' );
-	  }
    }); 
 }
 RecommendationController.$inject = [ '$scope', '$http', '$routeParams' ];
+
+
+// ----------------------------------------------------------------------------
+// UserCntl
+// ----------------------------------------------------------------------------
+function UsersCntl( $scope, $http){
+   $scope.doLogin = function(){
+	  var  loginName = $scope.login_name;
+	  var loginPword = $scope.login_pass;
+	  console.log( 'logging in... ' );
+   }
+
+
+   $scope.doSignUp = function(){
+   }
+}
+UsersCntl.$inject = [ '$scope', '$http' ];
+
