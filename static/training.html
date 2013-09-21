@@ -1,0 +1,27 @@
+<ul>
+   <form ng-repeat="recipe in recipes"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}">
+	  <h3>{{recipe.name}}</h3>
+	  {{recipe.description}}
+	  <br />
+	  <span ng-repeat="ing in recipe.ingredients">
+		 {{ing}}
+	  </span>
+	  
+	  <h4>Would you enjoy this recipe?</h4>
+	  <a style="display: inline-block; margin-right: 7px;" ng-click="rateRecipe( recipe.id, -1)">I Don't know</a> 
+	  <a style="display: inline-block; margin-right: 7px;" ng-click="rateRecipe( recipe.id, 0 )">No</a>
+	  <a style="display: inline-block; margin-right: 7px;" ng-click="rateRecipe( recipe.id, 3 )">Probably Not</a>
+	  <a style="display: inline-block; margin-right: 7px;" ng-click="rateRecipe( recipe.id, 7 )">Probably</a>
+	  <a style="display: inline-block; margin-right: 7px;" ng-click="rateRecipe( recipe.id, 10 )">Definitely!</a>
+
+
+	  <hr /> 
+	   
+   </form>
+
+   <br />
+   <br />
+   <br />
+
+
+</ul>
