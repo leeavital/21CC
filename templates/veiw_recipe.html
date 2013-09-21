@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+
+<h1> You're viewing the {{name}} recipe!  </h1>
+<table border="1">
+	<tr>
+		<td><b>Ingredient</b></td>
+		<td><b>Ammout</b></td>
+
+	</tr>
+
+</table>
+<h1> Steps on steps on steps! </h1>
+
+{% endblock %}
