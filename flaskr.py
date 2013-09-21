@@ -75,19 +75,17 @@ def view_ratings(id):
 
 @app.route('/recipes/training')
 def get_training_recipes():
-	r1 = {'id': 1, 'name': 'Pickles',
-				   'ingredients': ['Cucumber', 'Salt',
-				   'Vinegar', 'Water'], 
-				   'description': "It's a pickle"}
-	r2 = {'id': 2, 'name': 'Bread',
-				   'ingredients': ['Salt', 'Yeast',
-				   'Flour', 'Water'], 
-				   'description': "It's bread"}
-	r3 = {'id': 3, 'name': 'Salad',
-				   'ingredients': ['Cucumber', 'Tomato',
-				   'Lettuce', 'Olives', 'Dressing'], 
-				   'description': "It's a salad.  A bad one."}
-	return flask.jsonify({'recipes': [r1, r2, r3]})
+	ids = tuple([x for x in range(1,12)])
+	query = "SELECT * FROM recipes where id in " + str(ids)
+	cur = g.db.cursor()
+	cur.execute(query)
+
+	testRecipes =  cur.fetchall()
+
+	testRecipes = [{'id': recipe['id'], 'ingredients': ['Nothing Yet'],
+					'name': recipe['name'], 'description': "Read the name"} for recipe in testRecipes]
+
+	return flask.jsonify({'recipes': testRecipes})
 
 
 @app.route('/recipes/training/<int:recipe_id>/<int:rating>')
