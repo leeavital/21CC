@@ -1,5 +1,6 @@
 <ul>
-   <form ng-repeat="recipe in recipes"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}">
+   
+   <form ng-model="recipe" ng-if="!recipe.trained" ng-repeat="recipe in recipes"  ng-directive ng-animate=" 'animate' ">
 	  <h3>{{recipe.name}}</h3>
 	  {{recipe.description}}
 	  <br />

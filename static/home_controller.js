@@ -5,7 +5,8 @@ angular.module( 'deepLinking', [] ).
 		 .when( '/recipe/:recipeId', {templateUrl: 'recipe.html', controller: RecipeController} )
 		 .when( '/recommendations', {templateUrl: 'recommendations.html', controller: RecommendationController} )
 		 .when( '/users', {templateUrl: 'users.html', controller: UsersCntl} )
-		 .when( '/training', {templateUrl: 'training.html', controller: TrainingCntl} );
+		 .when( '/training', {templateUrl: 'training.html', controller: TrainingCntl} )
+		 .when( '/home', {templateUrl: 'home.html', controller: HomeCntl} );
    }]);
 
 
@@ -24,10 +25,18 @@ WelcomeCntl.$inject = [ '$scope', '$location' ];
 // ----------------------------------------------------------------------------
 // AppCntl -- main driver for the app. Does nothing so far
 // ----------------------------------------------------------------------------
-function AppCntl( $scope, $location ){
-   $location.path( '/users' ); 
+function AppCntl( $scope, $location, $http ){
+   
+   $http.get( '/current_user' ).success( function(){
+	  
+	  $location.path( '/home' );
+
+   }).error( function(){
+	  $location.path( '/users' );
+   });
+   
 }
-AppCntl.$inject = [ '$scope', '$location' ];
+AppCntl.$inject = [ '$scope', '$location', '$http' ];
 
 
 
@@ -79,8 +88,7 @@ function UsersCntl( $scope, $http, $location){
 	  }).success( function( response ){
 		 
 		 if( response.status == "ok" ){
-			alert( "successful login" );
-			$location.path( '/welcome' );
+			$location.path( '/home' );
 		 }else{
 			$scope.login_error = response.error;
 		 }
@@ -117,20 +125,63 @@ UsersCntl.$inject = [ '$scope', '$http', '$location' ];
 // TrainingCntl
 // ----------------------------------------------------------------------------
 function TrainingCntl( $scope, $http, $location ) {
+
    $http.get( '/recipes/training' ).success( function( recipes ){
-	  console.log( 'got recipes for training' );
-	  console.log( recipes );
+	  
+	  for( var r in recipes ){
+		 recipes[r].trained = false;
+	  }
+	  
 	  $scope.recipes = recipes;
    });
-
+   
 
    $scope.rateRecipe = function( rId, rating ){
-	  
 	  $http.get( '/recipes/training/' + rId + '/' + rating )
 		 .success( function(){
-			alert( 'ok!' ); 		 	
+			for( var r in $scope.recipes ){
+			   if ( $scope.recipes[r].id == rId ){
+				  console.log( 'found a recipe' );
+				  $scope.recipes[r].trained = true;
+			   }
+			}
 		 });
-
    }
 }
 TrainingCntl.$inject = [ '$scope', '$http', '$location' ];
+
+
+
+
+
+
+function HomeCntl( $scope, $http, $location ){
+   
+   $http.get( '/inventory' ).success( function( data ) {
+	  console.log( 'got inventory' );
+	  $scope.inventory = data;
+   });
+
+   $scope.addToInventory = function( item ){
+	  
+	  $scope.inventory.push({item: item} );
+	  $scope.new_inventory = '';
+	  $http.put( '/inventory', item ).success( function( ){
+		  
+		  
+	  });
+   }
+
+   $scope.removeItem = function( itemname ){
+	  $http.get( '/inventory/delete/' +  itemname ).success( function(){
+		 // it was actually deleted...
+	  });
+	  
+	  $scope.inventory = $scope.inventory.filter( function(inv){
+		 return inv.item != itemname;
+	  });
+   }	  
+   
+
+} // ent ctlt
+HomeCntl.$inject = [ '$scope', '$http', '$location' ];

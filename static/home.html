@@ -1,0 +1,11 @@
+<ul>
+   <li ng-repeat="inv in inventory">
+	  {{inv.item}}
+	  <span class="btn btn-primary" ng-click="removeItem(inv.item) " href="#">Remove</span>
+	  <br />
+	  <br />
+   </li>
+   <form ng-submit="addToInventory( new_inventory )">
+	  <input type="text" ng-model="new_inventory" /> 
+   </form>
+</ul>
