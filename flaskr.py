@@ -12,6 +12,8 @@ from flask import Flask, request, session, g, redirect, url_for, \
 	 abort, render_template, flash
 import json
 
+import auth
+
 
 # all the imports
 from flask import Flask, request, session, g, redirect, url_for, \
@@ -109,7 +111,6 @@ def get_training_recipes():
 def rate_training_recipe(recipe_id, rating):
 	if rating != -1:
 		values = (session['user_id'], recipe_id, rating)
-		# query = "INSERT INTO userratings VALUES( " + str(values) + ")"
 		query = "INSERT INTO userratings(userid, recipeid, score) " +\
 		 "VALUES(%d, %d, %d)" % values
 	  
@@ -170,26 +171,16 @@ def login():
    r_code = 200
    d = {}
 
-   query = """SELECT COUNT(*) AS matched, name, id  FROM users WHERE password=MD5("%s") AND name="%s";""" % (try_pword, try_uname)
-   cur = g.db.cursor()
   
-   print query 
-   cur.execute(query)
-   
-   match = cur.fetchone() 
-   num_matches = match["matched"]
-   matched_uname = match["name"]
-   
-   if num_matches == 0:
-	  r_code = 401 
-	  d = {"error": "bad password"}
-   else:
-	  session["username"] = match["name"]
-	  session["user_id"] = match["id"]
-	  r_code = 401  # unauthorized
+   try:
+	  u = auth.log_user_in( try_uname, try_pword )
+	  r_code = 200
 	  d = {"status": "ok"}
+   except Exception as e:
+	  r_code = 301
+	  d = {"error": str(e) }
 
-
+	   
    response = flask.jsonify( d )
    response.headers["status"] = r_code
 
