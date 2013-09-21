@@ -4,7 +4,8 @@ angular.module( 'deepLinking', [] ).
 		 .when( '/welcome', {templateUrl: 'welcome.html', controller: WelcomeCntl} )
 		 .when( '/recipe/:recipeId', {templateUrl: 'recipe.html', controller: RecipeController} )
 		 .when( '/recommendations', {templateUrl: 'recommendations.html', controller: RecommendationController} )
-		 .when( '/users', {templateUrl: 'users.html', controller: UsersCntl} );
+		 .when( '/users', {templateUrl: 'users.html', controller: UsersCntl} )
+		 .when( '/training', {templateUrl: 'training.html', controller: TrainingCntl} );
    }]);
 
 
@@ -102,7 +103,7 @@ function UsersCntl( $scope, $http, $location){
 			password: pass	
 		 } ).success( function( data ){
 			$location.path( '/training' );
-		 });
+		 })
 	  }
 	  
 	   
@@ -110,3 +111,23 @@ function UsersCntl( $scope, $http, $location){
 }
 UsersCntl.$inject = [ '$scope', '$http', '$location' ];
 
+
+
+// ----------------------------------------------------------------------------
+// TrainingCntl
+// ----------------------------------------------------------------------------
+function TrainingCntl( $scope, $http, $location ) {
+   $http.get( '/recipes/training' ).success( function( recipes ){
+	  console.log( 'got recipes for training' );
+	  console.log( recipes );
+	  $scope.recipes = recipes;
+   });
+
+
+   $scope.rateRecipe = function( rId, rating ){
+	  
+	  alert( 'rate is not implemented' );
+
+   }
+}
+TrainingCntl.$inject = [ '$scope', '$http', '$location' ];
