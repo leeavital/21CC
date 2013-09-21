@@ -1,12 +1,13 @@
 import recipe
 import metaInfo
-
+import MySQLdb
+import MySQLdb.cursors
 # all the imports
 from flask import Flask, request, session, g, redirect, url_for, \
-     abort, render_template, flash
+	 abort, render_template, flash
 
 # configuration
-DATABASE = None  # put a DB here
+DATABASE = "ec2-54-219-48-12.us-west-1.compute.amazonaws.com"
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
@@ -17,11 +18,25 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
-
 def connect_db():
-    return sqlite3.connect(app.config['DATABASE'])
+	
 
+	conn = MySQLdb.connect(host=DATABASE, port=3306, user='test_user',
+						   passwd='mypass', db='Test1234',
+						   cursorclass=MySQLdb.cursors.DictCursor)
+	print "CONNECTION: \n\n\n"
 
+	return conn
+
+@app.before_request
+def before_request():
+	g.db = connect_db()
+	
+@app.teardown_request
+def teardown_request(exception):
+	db = getattr(g, 'db', None)
+	if db is not None:
+		db.close()
 
 
 @app.route('/')
@@ -30,10 +45,14 @@ def homepage():
 
 @app.route('/get_ingredients')
 def get_ingredients():
-	query = "SELECT * FROM ingredients"
 	# execute Query
-	# cur = g.db.execute(query)
-	ingredients = ["Salt", "Pepper", "Oregano"] #fetchall
+	cur = g.db.cursor()
+	cur.execute("SELECT name FROM ingredients")
+	
+	print "\n\n\n"
+
+	ingredients = [(x['name'], x['type']) for x in cur.fetchall()] 
+
 	return render_template('ingredients.html',  **{'ingredients': ingredients})
 
 @app.route('/recipe/<int:id>')
@@ -45,4 +64,4 @@ def view_recipe(id):
 	return render_template('view_recipe.html', **d)
 
 if __name__ == '__main__':
-    app.run()
+	app.run()

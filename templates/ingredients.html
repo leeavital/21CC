@@ -11,8 +11,9 @@ Welcome to the Ingredient page!
 	</tr>
 	{%for name in ingredients%}
 	<tr>
-		<td>{{name}}</td>
-		
+		<td>{{name[0]}}</td>
+		<td>{{name[1]}}</td>
+
 	</tr>
 	{% endfor %}
 </table>
