@@ -165,7 +165,7 @@ def login():
    r_code = 200
    d = {}
 
-   query = """SELECT COUNT(*) AS matched, name FROM users WHERE password=MD5("%s") AND name="%s";""" % (try_pword, try_uname)
+   query = """SELECT COUNT(*) AS matched, name, id  FROM users WHERE password=MD5("%s") AND name="%s";""" % (try_pword, try_uname)
    cur = g.db.cursor()
   
    print query 
@@ -180,6 +180,7 @@ def login():
 	  d = {"error": "bad password"}
    else:
 	  session["username"] = match["name"]
+	  session["user_id"] = match["id"]
 	  r_code = 401  # unauthorized
 	  d = {"status": "ok"}
 
