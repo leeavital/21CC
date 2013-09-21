@@ -9,23 +9,18 @@
 	  <link type="text/css" rel="stylesheet" href="/static/stylesheets/bootstrap.min.css" />
 	  <link type="text/css" rel="stylesheet" href="/static/stylesheets/bootstrap-responsive.min.css" />
 	  <link type="text/css" rel="stylesheet" href="/static/stylesheets/site.css" />
-
-	  
    </head>
 
    <body>
 
 	  <div ng-controller="AppCntl" class="container">
 		 <h1>Eat.me</h1>
-		 <h2>Smart eating</h2>
-		 [ <a href="#welcome">Welcome</a> | <a href="#settings">Settings</a> ]
-   	  	 <hr/>
+		 <h5>21st Century Recipes, For 21st Century Eaters</h5>
    	  	 
 		 <span class="partial-info">
 			{{$route.current.template}}
    	  	 </span>
    	  	 <div ng-view></div>
-   	  	 <small>Eat Me</small>
    	  </div>
 
    </body>
