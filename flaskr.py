@@ -74,7 +74,7 @@ def view_recipe(id):
 
 @app.route('/recommendations')
 def recommendations():
-   dummy = [ {"id": x, "title": "title " + str(x)} for x in range( 0, 10 ) ]
+   dummy = [ {"id": x, "name": "name " + str(x)} for x in range( 0, 10 ) ]
    # can't use flask.jsonify because it won't take a list
    return flask.Response(json.dumps( dummy ),  mimetype='application/json')
 
