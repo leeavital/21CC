@@ -40,10 +40,8 @@ def connect_db():
 
 @app.before_request
 def before_request():
-   try:
-	  g.db = connect_db()
-   except:
-	  print "passed..."
+     
+   g.db = connect_db()
 	
 @app.teardown_request
 def teardown_request(exception):
@@ -67,7 +65,7 @@ def get_ingredients():
 	ingredients = [(x['name'], x['type']) for x in cur.fetchall()] 
 	
 	return render_template('ingredients.html',  **{'ingredients': ingredients})
-
+   
 
 @app.route('/user_ratings/<int:id>')
 def view_ratings(id):
@@ -115,9 +113,12 @@ def current_user():
 def login():
    
    
-   
-   try_pword = request.form["password"]
-   try_uname = request.form["username"]
+   # we have to use json.loads instead of request.form
+   # because angularjs sends all post requests as 
+   # multipart (???)
+   form = json.loads( request.data )
+   try_pword = form["password"]
+   try_uname = form["username"]
    
    r_code = 200
    d = {}
@@ -149,8 +150,9 @@ def login():
 
 @app.route("/user_create", methods=["POST"])
 def user_create():
-   uname = request.form["username"]
-   password = request.form["password"]
+   form = json.loads( request.data )
+   uname = form["username"]
+   password = form["password"]
 
    query = """INSERT INTO users(name, password) VALUES("%s", MD5("%s"))""" % (uname, password)
     
