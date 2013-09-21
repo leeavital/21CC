@@ -19,11 +19,14 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
 
-if __name__ == '__main__':
-    app.run()
 
 
 
-@app.route("/")
+@app.route('/')
 def homepage():
 	return "Welcome home!"
+
+
+
+if __name__ == '__main__':
+    app.run()
