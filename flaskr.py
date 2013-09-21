@@ -100,7 +100,9 @@ def get_training_recipes():
 	testRecipes = [{'id': recipe['id'], 'ingredients': ['Nothing Yet'],
 					'name': recipe['name'], 'description': "Read the name"} for recipe in testRecipes]
 
-	return flask.jsonify({'recipes': testRecipes})
+   	
+	return flask.Response( json.dumps( testRecipes ), mimetype='application/json' )
+
 
 
 @app.route('/recipes/training/<int:recipe_id>/<int:rating>')
