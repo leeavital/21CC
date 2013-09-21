@@ -198,6 +198,8 @@ def user_create():
    g.db.cursor().execute( query )
    g.db.commit()
 
+   u = auth.log_user_in( uname, password )
+
    return flask.jsonify( {"status": "ok"} ) 
 
 if __name__ == '__main__':
