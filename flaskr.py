@@ -3,6 +3,8 @@ import metaInfo
 import MySQLdb
 import MySQLdb.cursors
 
+import sys
+
 
 
 # all the imports
@@ -17,11 +19,24 @@ from flask import Flask, request, session, g, redirect, url_for, \
 import flask
 
 # configuration
-DATABASE = "ec2-54-219-48-12.us-west-1.compute.amazonaws.com"
-DEBUG = True
-SECRET_KEY = 'development key'
-USERNAME = 'admin'
-PASSWORD = 'default'
+print sys.argv
+if len(sys.argv) == 2 and sys.argv[ 1 ] == "debug":
+   print "using debug..."
+   DATABASE= "localhost"
+   DEBUG = True
+   SECRET_KEY = 'development key'
+   USERNAME = 'root'
+   PASSWORD = 'root'
+   DB_USER = 'root'
+   DB_PASS = 'root'
+else:
+   DATABASE = "ec2-54-219-48-12.us-west-1.compute.amazonaws.com"
+   DEBUG = True
+   SECRET_KEY = 'development key'
+   USERNAME = 'admin'
+   PASSWORD = 'default'
+   DB_USER = "test_user"
+   DB_PASS = 'mypass'
 
 # create our little application :)
 app = Flask(__name__)
@@ -31,8 +46,8 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 def connect_db():
 	
 
-	conn = MySQLdb.connect(host=DATABASE, port=3306, user='test_user',
-						   passwd='mypass', db='prod',
+	conn = MySQLdb.connect(host=DATABASE, port=3306, user=DB_USER,
+						   passwd=DB_PASS, db='prod',
 						   cursorclass=MySQLdb.cursors.DictCursor)
 	print "CONNECTION: \n\n\n"
 
