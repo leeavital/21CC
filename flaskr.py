@@ -109,11 +109,16 @@ def get_training_recipes():
 def rate_training_recipe(recipe_id, rating):
 	if rating != -1:
 		values = (session['user_id'], recipe_id, rating)
-		query = "INSERT INTO user_ratings VALUES " + str(values)
+		# query = "INSERT INTO userratings VALUES( " + str(values) + ")"
+		query = "INSERT INTO userratings(userid, recipeid, score) " +\
+		 "VALUES(%d, %d, %d)" % values
+	  
 		cur = g.db.cursor()
 
 		cur.execute(query)
 		g.db.commit()
+
+		return flask.jsonify( {"status" : "ok" } )
 
 @app.route('/recipe/<int:id>')
 def view_recipe(id):
