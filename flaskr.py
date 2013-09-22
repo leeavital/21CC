@@ -170,14 +170,14 @@ def view_recipe(id):
    	cur = g.db.cursor()
 	d = {}
 	cur.execute(query.format(id))
-	d['name'] = cur.fetchone()['name']
-
+	z = cur.fetchone()
+	d['name'] = z['name']
 	# query = "SELECT name FROM recipecomboe WHERE recipeid='{0}'"
 	query = "SELECT * FROM recipecombo JOIN ingredients ON ingredients.id=recipecombo.ingredientid WHERE recipecombo.recipeid={0}"
 	cur.execute(query.format(id))
 
 	d['ingredients'] = [x["name"] for x in cur.fetchall()]
-
+	d['pic'] = z['imageurl']
 	query = "SELECT * FROM recipetext WHERE recipeid={0}".format( id )
 	cur.execute( query )
 	d["description"] = cur.fetchone()["recipetexts"]
