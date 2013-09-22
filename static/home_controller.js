@@ -9,7 +9,8 @@ angular.module( 'deepLinking', [] ).
 		 .when( '/recommendations', {templateUrl: '/static/recommendations.html', controller: RecommendationController} )
 		 .when( '/users', {templateUrl: '/static/users.html', controller: UsersCntl} )
 		 .when( '/training', {templateUrl: '/static/training.html', controller: TrainingCntl} )
-		 .when( '/home', {templateUrl: '/static/home.html', controller: HomeCntl} );
+		 .when( '/home', {templateUrl: '/static/home.html', controller: HomeCntl} )
+		 .when( '/recipes/:recipesIds', {templateUrl: '/static/recipes.html', controller: RecipesController} );
    }]);
 
 
@@ -192,10 +193,12 @@ function HomeCntl( $scope, $http, $location ){
    $scope.showRecipes = function(){
 	  var toShow = $scope.recommendations.filter( function( e ) {
 		 return e.selected;
-	  } );
+	  } ).map( function( e ) { return e.id } );
 
-	  console.log( toShow );
-
+	  
+	  var url = toShow.join( '+' );
+	  $location.path( '/recipes/' + url );
+   
    }
    
    // populate recomendations
@@ -210,3 +213,11 @@ function HomeCntl( $scope, $http, $location ){
 
 } // ent ctlt
 HomeCntl.$inject = [ '$scope', '$http', '$location' ];
+
+
+
+
+function RecipesController( $scope, $http ){
+
+}
+RecipesController.$inject = ['$scope', '$http' ];
