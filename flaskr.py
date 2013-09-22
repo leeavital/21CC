@@ -95,13 +95,43 @@ def view_ratings():
 	testRecipes =  cur.fetchall()
 
 	testRecipes = [{'id': recipe['id'], 'ingredients': '',
-					'name': recipe['name'], 'description': "Read the name"} for recipe in testRecipes]
+					'name': (recipe['name'] + '(' + ing_string(get_ingredient_percentage(str(recipe['id']))) + "%)"), 'description': None}
+					for recipe in testRecipes]
 
    	
 	return flask.Response( json.dumps( testRecipes ), mimetype='application/json' )
 
 
+def get_ingredient_percentage(recipe_id):
+	ings = []
+	cur = g.db.cursor()
+	query = "SELECT * FROM recipecombo where recipeid = '{0}'".format(recipe_id)
+	cur.execute(query)
+	rows = cur.fetchall()
+	for row in rows:
+		query = "SELECT strippedID FROM ingredients where id = '{0}'".format(row['ingredientid'])
+		cur.execute(query)
+		strippedID = cur.fetchone()['strippedID']
+		sID = "SELECT * from strippedIngredients where id = '{0}'".format(strippedID)
+		cur.execute(sID)
+		ings.append(cur.fetchone()['name'])
 
+	cur.execute(   "SELECT * FROM userinventory WHERE uid=%d" % session["user_id"] )  
+	inven = [x['item'] for x in cur.fetchall()]
+	print inven
+	print ings
+	return (float(len([x for x in inven if x in ings])) / float(len(ings)))
+
+def ing_string(f):
+	print f
+	if f < .1:
+		return "You have FEW ingredients"
+	if f < .5:
+		return "You have SOME ingredients"
+	if f < .8:
+		return "You have MANY ingredients"
+	else:
+		return "You have MOST ingredients"
 @app.route('/recipes/training')
 def get_training_recipes():
 	query = "SELECT * from recipes order by rand() limit 10"
