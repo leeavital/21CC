@@ -1,7 +1,38 @@
 <h1>{{recipe.name}}</h1>
-<ul>
+
+
+<div ng-switch="rated">
+<h3>Rate this recipe</h3>
+   
+   
+   <div ng-switch-when="false">
+	  <a style="display: inline-block; margin-right: 7px;" ng-click="rateRecipe( recipe.id, 0 )">No</a>
+   	  <a style="display: inline-block; margin-right: 7px;" ng-click="rateRecipe( recipe.id, 3 )">Probably Not</a>
+   	  <a style="display: inline-block; margin-right: 7px;" ng-click="rateRecipe( recipe.id, 7 )">Probably</a>
+   	  <a style="display: inline-block; margin-right: 7px;" ng-click="rateRecipe( recipe.id, 10 )">Definitely!</a>
+   </div>
+
+   <div ng-switch-when="true">
+	  Thanks for rating <b>{{recipe.name}}</b>
+   </div>
+
+</div>
+
+
+
+
+
+<hr />
+
+
+
+<ul class="span5">
    <li ng-repeat="ing in recipe.ingredients">
 	  {{ing}} 
    </li>
+
 </ul>
 
+<span class="span3">
+   {{recipe.description}}
+</span>

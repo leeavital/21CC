@@ -17,32 +17,21 @@
 	  												  border: 0;" />
    </form>
 
-
-
-
-
 </ul>
 </div>
 
 <div class="span5">
-   
-   
    <h3>Recommended Recipes</h3>   
    <p>Based on what you've told us, you'll like these recipes.</p>
    <ul>
-   <li style="list-style-type: none" ng-repeat="rec in recommendations">
+   <li style="list-style-type: none; margin-bottom: 20px;" ng-repeat="rec in recommendations">
 	  <a class="recipe-tip" data-recipe-id="{{rec.id}}" href="/#/recipe/{{rec.id}}">
 	 {{rec.name}} 
 	  </a> 
-	  <input type="checkbox" ng-model="rec.selected" />
 	  <br />
 	  <i>{{rec.desciption}}</i>	
 
    </li>
    </ul>
-
-	  <button ng-click="showRecipes()" class="btn-primary btn">See Recipes</button>
-	  
-
 </div>
 

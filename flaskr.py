@@ -95,7 +95,7 @@ def view_ratings():
 	testRecipes =  cur.fetchall()
 
 	testRecipes = [{'id': recipe['id'], 'ingredients': '',
-					'name': (recipe['name'] + '(' + ing_string(get_ingredient_percentage(str(recipe['id']))) + "%)"), 'description': None}
+					'name': (recipe['name'] + '(' + ing_string(get_ingredient_percentage(str(recipe['id']))) + ")"), 'description': None}
 					for recipe in testRecipes]
 
    	
@@ -171,9 +171,19 @@ def view_recipe(id):
 	d = {}
 	cur.execute(query.format(id))
 	d['name'] = cur.fetchone()['name']
-	query = "SELECT name FROM ingredients WHERE recipeid = '{0}'"
+
+	# query = "SELECT name FROM recipecomboe WHERE recipeid='{0}'"
+	query = "SELECT * FROM recipecombo JOIN ingredients ON ingredients.id=recipecombo.ingredientid WHERE recipecombo.recipeid={0}"
 	cur.execute(query.format(id))
-	d['ingredients'] = cur.fetchall().values()
+
+	d['ingredients'] = [x["name"] for x in cur.fetchall()]
+
+	query = "SELECT * FROM recipetext WHERE recipeid={0}".format( id )
+	cur.execute( query )
+	d["description"] = cur.fetchone()["recipetexts"]
+
+	d["id"] = id
+
 	return flask.jsonify(d)
 
 
@@ -182,6 +192,7 @@ def recommendations():
    dummy = [ {"id": x, "name": "name " + str(x)} for x in range( 0, 10 ) ]
    # can't use flask.jsonify because it won't take a list
    return flask.Response(json.dumps( dummy ),  mimetype='application/json')
+
 
 
 @app.route('/current_user')

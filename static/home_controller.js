@@ -59,11 +59,21 @@ AppCntl.$inject = [ '$scope', '$location', '$http', '$rootScope' ];
 // ----------------------------------------------------------------------------
 function RecipeController( $scope, $http, $routeParams ){
    
+   
+   $scope.rated = false;
+    
    $http.get( '/recipe/' + $routeParams.recipeId ).success( function( data ){
-	  
+	  console.log( data );	  
 	  $scope.recipe = data;
    
    });
+
+
+   $scope.rateRecipe = function( rId, rating ){
+	  // assume it's going to work
+	  $http.get( '/recipes/training/' + rId + '/' + rating );
+	  $scope.rated = true;
+   }
 
 }
 RecipeController.$inject = [ '$scope', '$http', '$routeParams' ];
@@ -161,7 +171,9 @@ TrainingCntl.$inject = [ '$scope', '$http', '$location' ];
 
 
 
-
+// ----------------------------------------------------------------------------
+// Home Controller
+// ----------------------------------------------------------------------------
 function HomeCntl( $scope, $http, $location ){
    
    // populate inventory 
