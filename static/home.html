@@ -4,7 +4,7 @@
 <ul>
    <li style="list-style-type: none" ng-repeat="inv in inventory">
 	  {{inv.item}}
-	  <span class="icon-remove" ng-click="removeItem(inv.item) "  href="#"></span>
+	  <span class="icon-remove" ng-click="removeItem(inv.item) " href="#"></span>
 	  <br />
 	  <br />
    </li>
@@ -31,7 +31,10 @@
    <p>Based on what you've told us, you'll like these recipes.</p>
    <ul>
    <li style="list-style-type: none" ng-repeat="rec in recommendations">
-	  {{rec.name}} <input type="checkbox" ng-model="rec.selected" />
+	  <a class="recipe-tip" data-recipe-id="{{rec.id}}" href="/#/recipe/{{rec.id}}">
+	 {{rec.name}} 
+	  </a> 
+	  <input type="checkbox" ng-model="rec.selected" />
 	  <br />
 	  <i>{{rec.desciption}}</i>	
 
@@ -42,3 +45,4 @@
 	  
 
 </div>
+
