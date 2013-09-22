@@ -93,14 +93,11 @@ function UsersCntl( $scope, $http, $location){
 		 },
 		 method: 'POST'
 	  }).success( function( response ){
-		 
-		 if( response.status == "ok" ){
 			$location.path( '/home' );
 			$scope.current_user = loginName
-		 }else{
+	  } ).error( function( response ){
 			$scope.login_error = response.error;
-		 }
-	  } );
+	  });
    }
 
 
