@@ -1,3 +1,6 @@
+angular.module('deepLinking', ['ngAnimate']);
+
+
 angular.module( 'deepLinking', [] ).
    config( ['$routeProvider', function( $routeProvider ) {
 	  $routeProvider
@@ -27,11 +30,15 @@ WelcomeCntl.$inject = [ '$scope', '$location' ];
 // ----------------------------------------------------------------------------
 function AppCntl( $scope, $location, $http ){
    
-   $http.get( '/current_user' ).success( function(){
-	  
+   $http.get( '/current_user' ).success( function( data, status, headers ){
+
+	  console.log( status );
+	  console.log( data );
+	  console.log( 'success' ); 
 	  $location.path( '/home' );
 
    }).error( function(){
+	  console.log( 'error' );
 	  $location.path( '/users' );
    });
    

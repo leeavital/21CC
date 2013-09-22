@@ -142,15 +142,14 @@ def current_user():
    r_code = 200  
    d = {}
 
-   if "username" in session:
+   if "username" in session and "user_id" in session:
 	  d = {"username": session["username"]}
    else:
 	  d = {}
 	  r_code = 401 # unauthorized 401
 
    response = flask.jsonify( d )
-   response.headers[ "Status" ] = r_code 
-   return response
+   return response, r_code
 
 
 @app.route("/login", methods=["POST"])
@@ -178,9 +177,8 @@ def login():
 
 	   
    response = flask.jsonify( d )
-   response.headers["status"] = r_code
 
-   return response
+   return response, r_code
    
 
 @app.route("/user_create", methods=["POST"])
