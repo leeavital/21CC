@@ -162,6 +162,7 @@ TrainingCntl.$inject = [ '$scope', '$http', '$location' ];
 
 function HomeCntl( $scope, $http, $location ){
    
+   // populate inventory 
    $http.get( '/inventory' ).success( function( data ) {
 	  console.log( 'got inventory' );
 	  $scope.inventory = data;
@@ -186,6 +187,24 @@ function HomeCntl( $scope, $http, $location ){
 		 return inv.item != itemname;
 	  });
    }	  
+
+   $scope.showRecipes = function(){
+	  var toShow = $scope.recommendations.filter( function( e ) {
+		 return e.selected;
+	  } );
+
+	  console.log( toShow );
+
+   }
+   
+   // populate recomendations
+   $http.get( '/recipes/recommendations' ).success( function( recs ){
+	  
+	  console.log( recs );
+	  $scope.recommendations = recs;  
+
+
+   });
    
 
 } // ent ctlt

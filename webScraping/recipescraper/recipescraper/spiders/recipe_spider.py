@@ -12,8 +12,13 @@ class RecipeSpider(BaseSpider):
   def parse(self,response):
     hxs=HtmlXPathSelector(response)
     sites=hxs.select('//ol/li')
-    item=RecipescraperItem()
-    item['recipe']=sites.select('//span[@class="plaincharacterwrap break"]/text()').extract()[0]
-    return item
+    items=[]
+    count=0
+    for site in sites:
+      item=RecipescraperItem()
+      item['recipe']=sites.select('//span[@class="plaincharacterwrap break"]/text()').extract()[count]
+      items.append(item)
+      count=count+1
+    return items
     
    

@@ -18,3 +18,19 @@
    </form>
 </ul>
 </div>
+
+<div class="span5">
+   
+   <ul>
+   <li ng-repeat="rec in recommendations">
+	  {{rec.name}} <input type="checkbox" ng-model="rec.selected" />
+	  <br />
+	  <i>{{rec.desciption}}</i>	
+
+   </li>
+   </ul>
+
+	  <button ng-click="showRecipes()" class="btn-primary btn">See Recipes</button>
+	  
+
+</div>

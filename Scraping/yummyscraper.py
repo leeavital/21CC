@@ -1,6 +1,11 @@
 from yummly import Client
 import MySQLdb
 import MySQLdb.cursors
+#import scrapeRecipes
+from bs4 import BeautifulSoup
+import re
+import urllib2
+
 
 def main():
 
@@ -32,6 +37,15 @@ def main():
 
 
 
+def getDescription(url):
+  page=urllib2.urlopen(url)
+  soup=BeautifulSoup(page)
+  orderlist=soup.find('ol')
+  result=""
+  for li in orderlist.find_all("li",recursive="False"):
+    result=result+(li.text)
+  return result 
+
 
 
 
@@ -52,10 +66,12 @@ def process(recipe):
 	# 		print flavor + ": "+str(recipe.flavors[flavor])
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod", cursorclass=MySQLdb.cursors.DictCursor)
 	cur = db.cursor()
+	#description = "YUM"
+	#scrapeRecipes.getRecipe(recipe.source['sourceRecipeUrl'])
+        description = getDescription(recipe.source['sourceRecipeUrl'])
 
 
 	#  description = sr.getRecipe(recipe.source['sourceRecipeUrl'])
-	description = "woo"
 	if "cuisine" in recipe.attributes:
 		cuis = recipe.attributes['cuisine'][0]
 	else:
