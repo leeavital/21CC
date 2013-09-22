@@ -41,10 +41,27 @@ def main():
 		cur.execute(query)
 		row = cur.fetchone()
 		if row == None:
-			print "None"
 			query = "INSERT into strippedIngredients (name, type, unstrippedID) VALUES ('{0}','{1}','{2}')".format(new,'None',elem['id'])
 			cur.execute(query)
 			cur.execute("COMMIT")
+			query = "SELECT id, unstrippedID  from strippedIngredients where name = '{0}'".format(new)
+			cur.execute(query)
+			c = cur.fetchone()
+			u = c['unstrippedID']
+			s = c['id']
+			query = "UPDATE ingredients SET strippedID = {0} where id = {1}".format(s, u)
+			cur.execute(query)	
+			cur.execute("COMMIT")
+		else:
+
+			query = "SELECT id from strippedIngredients where name = '{0}'".format(new)
+			cur.execute(query)
+			n = cur.fetchone()['id']	
+			query = "UPDATE ingredients SET strippedID = {0} where id = {1}".format(n, elem['id'])
+			cur.execute(query)	
+			cur.execute("COMMIT")			
+
+
 		es.append(elem['name'])
 		# print  elem['name']
 

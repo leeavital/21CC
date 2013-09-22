@@ -65,7 +65,7 @@ def addRecipe(recipeName,ingredientsList):
 		cur.execute("INSERT INTO ingredients (name, type) VALUES ('{0}','FOOD')".format(item))
 		cur.execute("SELECT id FROM ingredients WHERE name = '{0}'".format(item))
 		itemid = cur.fetchone()['id']
-		cur.execute("INSERT INTO recipecombo (recipeid,ingredientid) VALUES ('{0}',{1})".format(recipeid,itemid))
+		cur.execute("INSERT INTO recipecombo (recipeid,ingredientid) VALUES ('{0}','{1}')".format(recipeid,itemid))
 	cur.execute("COMMIT")
 
 

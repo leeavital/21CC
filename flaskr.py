@@ -87,6 +87,7 @@ def view_ratings():
 	id = session['user_id']
 	x = nn.build_net_for_user(id, g.db)
 	if x == False:
+		print "RETURNING FALSE"
 		return flask.Response( json.dumps( {'message': 'Rate more recipes for recommendations'} ), mimetype='application/json' ), 418
 	query = "SELECT * from recipes where id in " + str(tuple(x))
 	cur = g.db.cursor()

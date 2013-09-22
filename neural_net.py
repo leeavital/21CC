@@ -59,10 +59,12 @@ def build_net_for_user(uID, connection):
 	d = {}
 	for x in cur.fetchall():
 		ans = net.activate([x['salty'], x['savory'], x['spicy'], x['filling'], x['sour'], x['sweet']])
+		print ans[0]
+		print x['name']
 		d[ans[0]] = x
 
 	s = sorted(d.keys())
-	print str(d[s[0]]['name'])
-
-	return str([d[s[x]]['id'] for x in range(5)])
+	print s
+	print [ int(d[s[-x]]['id']) for x in range(5)]
+	return [ int(d[s[-x]]['id']) for x in range(5)]
 
