@@ -20,16 +20,18 @@
 </ul>
 </div>
 
-<div class="span5">
+<div class="span5" ng-switch="recipes">
    <h3>Recommended Recipes</h3>   
    <p>Based on what you've told us, you'll like these recipes.</p>
-   <ul>
+   
+    
+    
+   <ul ng-switch-default>
+   
    <li style="list-style-type: none; margin-bottom: 20px;" ng-repeat="rec in recommendations">
 	  <a class="recipe-tip" data-recipe-id="{{rec.id}}" href="/#/recipe/{{rec.id}}">
 	 {{rec.name}} 
 	  </a> 
-	  <br />
-	  <i>{{rec.desciption}}</i>	
 
    </li>
    </ul>
