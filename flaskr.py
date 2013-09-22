@@ -93,7 +93,7 @@ def get_training_recipes():
 
 	testRecipes =  cur.fetchall()
 
-	testRecipes = [{'id': recipe['id'], 'ingredients': ['Nothing Yet'],
+	testRecipes = [{'id': recipe['id'], 'ingredients': '',
 					'name': recipe['name'], 'description': "Read the name"} for recipe in testRecipes]
 
    	

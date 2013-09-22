@@ -10,7 +10,7 @@ def build_net_for_user(uID, connection):
 	user = cur.fetchone()
 	print user
 
-	net = buildNetwork(6, 10, 1, bias = True, learningrate=0.03, lrdecay = .99)
+	net = buildNetwork(6, 10, 1, bias = True)
 
 
 	ds = SupervisedDataSet(6, 1)
@@ -35,7 +35,7 @@ def build_net_for_user(uID, connection):
 		print "RECIPE IS: "+str(recipe)
 		rating = ratedRecipes2[recipe['id']]
 		print recipe
-		scores = [recipe['Salty'], recipe['Meaty'], recipe['Piquant'] , recipe['Bitter'], recipe['Sour'], recipe['Sweet']]
+		scores = [recipe['salty'], recipe['savory'], recipe['spicy'] , recipe['filling'], recipe['sour'], recipe['sweet']]
 		ds.addSample(scores, rating)
 
 	print ds
@@ -44,8 +44,16 @@ def build_net_for_user(uID, connection):
 
 	print trainer.trainUntilConvergence(maxEpochs = 1000)
 
-	x = net.activate([7,2,1,3,3])
-	y = net.activate([6,2,10,3,1])
+	
+	q = "SELECT * FROM recipes"
+	cur.execute(q)
+	d = {}
+	for x in cur.fetchall():
+		ans = net.activate([x['salty'], x['savory'], x['spicy'], x['filling'], x['sour'], x['sweet']])
+		d[ans[0]] = x
 
-	print str(x)
-	return str(x > y)
+	s = sorted(d.keys())
+	print str(d[s[0]]['name'])
+
+	return str([d[s[x]]['name'] for x in range(5)])
+
