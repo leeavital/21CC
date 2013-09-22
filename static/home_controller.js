@@ -28,12 +28,16 @@ WelcomeCntl.$inject = [ '$scope', '$location' ];
 // ----------------------------------------------------------------------------
 // AppCntl -- main driver for the app. Does nothing so far
 // ----------------------------------------------------------------------------
-function AppCntl( $scope, $location, $http ){
+function AppCntl( $scope, $location, $http, $rootScope ){
    
    $http.get( '/current_user' ).success( function( data, status, headers ){
+	 
+	  $rootScope.current_user = data.username;
 	  
 	  if( $location.path() == '' ){
 		 $location.path( '/home' );
+		 console.log( $rootScope );
+
 	  }else{
 		 // use whatever the user specified
 	  }
@@ -43,7 +47,7 @@ function AppCntl( $scope, $location, $http ){
    });
    
 }
-AppCntl.$inject = [ '$scope', '$location', '$http' ];
+AppCntl.$inject = [ '$scope', '$location', '$http', '$rootScope' ];
 
 
 
@@ -80,7 +84,7 @@ RecommendationController.$inject = [ '$scope', '$http', '$routeParams' ];
 // ----------------------------------------------------------------------------
 // UserCntl
 // ----------------------------------------------------------------------------
-function UsersCntl( $scope, $http, $location){
+function UsersCntl( $scope, $http, $location, $rootScope){
    $scope.doLogin = function(){
 	  var  loginName = $scope.login_name;
 	  var loginPword = $scope.login_pass;
@@ -94,7 +98,7 @@ function UsersCntl( $scope, $http, $location){
 		 method: 'POST'
 	  }).success( function( response ){
 			$location.path( '/home' );
-			$scope.current_user = loginName
+			$rootScope.current_user = loginName;
 	  } ).error( function( response ){
 			$scope.login_error = response.error;
 	  });
@@ -121,7 +125,7 @@ function UsersCntl( $scope, $http, $location){
 	   
    }
 }
-UsersCntl.$inject = [ '$scope', '$http', '$location' ];
+UsersCntl.$inject = [ '$scope', '$http', '$location', '$rootScope' ];
 
 
 

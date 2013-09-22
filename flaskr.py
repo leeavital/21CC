@@ -166,11 +166,15 @@ def rate_training_recipe(recipe_id, rating):
 
 @app.route('/recipe/<int:id>')
 def view_recipe(id):
-   query = "SELECT * FROM recipes WHERE ID = " + str(id)  # Please don't SQL inject me
-   d = {}
-   d['name'] = "SAUCE ON SAUCE ON SAUCE"
-   d['ingredients'] = ['sauce', 'saws']
-   return flask.jsonify(d)
+	query = "SELECT name FROM recipes WHERE ID = '{0}'"   # Please don't SQL inject me
+   	cur = g.db.cursor()
+	d = {}
+	cur.execute(query.format(id))
+	d['name'] = cur.fetchone()['name']
+	query = "SELECT name FROM ingredients WHERE recipeid = '{0}'"
+	cur.execute(query.format(id))
+	d['ingredients'] = cur.fetchall().values()
+	return flask.jsonify(d)
 
 
 @app.route('/recommendations')
