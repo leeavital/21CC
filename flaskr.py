@@ -17,7 +17,6 @@ import auth
 
 
 # configuration
-print sys.argv
 if len(sys.argv) == 2 and sys.argv[ 1 ] == "debug":
    print "using debug..."
    DATABASE= "localhost"
@@ -253,3 +252,4 @@ def inventory_delete( item  ):
 
 if __name__ == '__main__':
 	app.run()
+	
