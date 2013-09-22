@@ -284,6 +284,20 @@ def inventory_delete( item  ):
    g.db.commit()
    return flask.jsonify( {"status": "ok"} )
 
+@app.rout("/recipetiming")
+def get_timing(recipeList):
+        query = """SElECT * FROM recipes where id = "{0}" """
+        cur = g.db.cursor()
+        timeList = []
+        templist = []
+        for item in recipeList:
+                cur.execute(query.format(item))
+                templist.append((cur.fetchone()['name'],cur.fetchone()['cooktime']))
+        sorted(templist,key=itemgetter(1),reverse=True)
+        Max = templist[0][1]
+        for item in templist:
+                timeList.append((item[0],Max-item[1]))
+        return timeList
+
 if __name__ == '__main__':
-	app.run()
-	
+	app.run()	
