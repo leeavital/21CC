@@ -97,7 +97,6 @@ function UsersCntl( $scope, $http, $location){
 
 
    $scope.doSignUp = function(){
-	  
 	  var name = $scope.signup_name
 	  var pass = $scope.signup_pass
 	  var pass2 = $scope.signup_pass2
@@ -137,15 +136,13 @@ function TrainingCntl( $scope, $http, $location ) {
    
 
    $scope.rateRecipe = function( rId, rating ){
-	  $http.get( '/recipes/training/' + rId + '/' + rating )
-		 .success( function(){
-			for( var r in $scope.recipes ){
-			   if ( $scope.recipes[r].id == rId ){
-				  console.log( 'found a recipe' );
-				  $scope.recipes[r].trained = true;
-			   }
-			}
-		 });
+	  // assume it's going to work
+	  $http.get( '/recipes/training/' + rId + '/' + rating );
+
+	  // now remove from the list
+	  $scope.recipes = $scope.recipes.filter( function( r ){
+		 return r.id != rId;
+	  } );
    }
 }
 TrainingCntl.$inject = [ '$scope', '$http', '$location' ];
