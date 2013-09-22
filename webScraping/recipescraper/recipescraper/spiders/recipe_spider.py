@@ -1,5 +1,7 @@
 from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
+from recipescraper.items import RecipescraperItem
+
 class RecipeSpider(BaseSpider):
   name="recrawling"
  
@@ -10,8 +12,8 @@ class RecipeSpider(BaseSpider):
   def parse(self,response):
     hxs=HtmlXPathSelector(response)
     sites=hxs.select('//ol/li')
-
-    recipe=sites.select('//span[@class="plaincharacterwrap break"]/text()').extract()
-    return recipe[0]
+    item=RecipescraperItem()
+    item['recipe']=sites.select('//span[@class="plaincharacterwrap break"]/text()').extract()[0]
+    return item
     
    
