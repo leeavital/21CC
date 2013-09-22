@@ -186,6 +186,14 @@ function HomeCntl( $scope, $http, $location ){
 		 return inv.item != itemname;
 	  });
    }	  
+
+   $http.get( '/recipes/recommendations' ).success( function( recs ){
+	  
+	  console.log( recs );
+	  $scope.recommendations = recs;  
+
+
+   });
    
 
 } // ent ctlt
