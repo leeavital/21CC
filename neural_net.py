@@ -23,13 +23,16 @@ def build_net_for_user(uID, connection):
 	for x in ratedRecipes:
 		print x
 		ratedRecipes2[int(x['recipeid'])] = x['score']/10.0
-
+	print ratedRecipes2.keys()
 	recipeQuery = "SELECT * FROM recipes where id in " + str(tuple(ratedRecipes2.keys()))
+
 	print recipeQuery
 	cur.execute(recipeQuery)
 
 	recipes = cur.fetchall()
 
+	if len(recipes) < 4:
+		return False
 
 	for recipe in recipes:
 		print "RECIPE IS: "+str(recipe)
@@ -42,9 +45,15 @@ def build_net_for_user(uID, connection):
 	
 	trainer = BackpropTrainer(net, ds)
 
-	print trainer.trainUntilConvergence(maxEpochs = 1000)
+	z = trainer.trainUntilConvergence(maxEpochs = 1000)
+	print z
 
-	
+	while z[-1][-1] > .05:
+		trainer = BackpropTrainer(net, ds)
+
+		z = trainer.trainUntilConvergence(maxEpochs = 1000)	
+		print z
+
 	q = "SELECT * FROM recipes"
 	cur.execute(q)
 	d = {}
@@ -55,5 +64,5 @@ def build_net_for_user(uID, connection):
 	s = sorted(d.keys())
 	print str(d[s[0]]['name'])
 
-	return str([d[s[x]]['name'] for x in range(5)])
+	return str([d[s[x]]['id'] for x in range(5)])
 

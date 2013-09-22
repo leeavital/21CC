@@ -9,7 +9,12 @@ def createIngredients():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod")
 	cur = db.cursor()
 	cur.execute('DROP TABLE IF EXISTS ingredients')
-	cur.execute('CREATE TABLE IF NOT EXISTS ingredients (id INT AUTO_INCREMENT, name CHAR(255), type CHAR(30), UNIQUE KEY (name), PRIMARY KEY (id))')
+	cur.execute('CREATE TABLE IF NOT EXISTS ingredients (id INT AUTO_INCREMENT, name CHAR(255), type CHAR(30), strippedID INT, UNIQUE KEY (name), PRIMARY KEY (id))')
+def createStrippedIngredients():
+	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod")
+	cur = db.cursor()
+	cur.execute('DROP TABLE IF EXISTS strippedIngredients')
+	cur.execute('CREATE TABLE IF NOT EXISTS strippedIngredients (id INT AUTO_INCREMENT, name CHAR(255), type CHAR(30), unstrippedID INT, UNIQUE KEY (name), PRIMARY KEY (id))')
 
 def createRecipes():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod")
@@ -33,11 +38,11 @@ def createRecipecombo():
 	cur = db.cursor()
 	cur.execute('DROP TABLE IF EXISTS recipecombo')
 	cur.execute('CREATE TABLE IF NOT EXISTS recipecombo (recipeid INT NOT NULL, ingredientid INT NOT NULL, amount CHAR(255) NOT NULL)')
-def createRecipeText()
+def createRecipeText():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod")
 	cur = db.cursor()
 	cur.execute('DROP TABLE IF EXITS recipetext')
-	cur.execute('CREATE TABLE IF NOT EXISTS recipetext (recipeid INT NOT NULL, recipetexts TEXT)'
+	cur.execute('CREATE TABLE IF NOT EXISTS recipetext (recipeid INT NOT NULL, recipetexts TEXT')
 def populate():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod", cursorclass=MySQLdb.cursors.DictCursor)
 	cur = db.cursor()
@@ -68,6 +73,7 @@ def main():
 	#init()
 	createIngredients()
 	createRecipes()
+	createStrippedIngredients()
 	#createUsers()
 	createRatings()
 	createRecipecombo()

@@ -79,11 +79,26 @@ def get_ingredients():
 	return render_template('ingredients.html',  **{'ingredients': ingredients})
    
 
-@app.route('/user_ratings/<int:id>')
-def view_ratings(id):
+@app.route('/recipes/recommendations')
+def view_ratings():
 	import neural_net as nn
+	id = session['user_id']
 	x = nn.build_net_for_user(id, g.db)
-	return x
+	if x == False:
+		return flask.Response( json.dumps( {'message': 'Rate more recipes for recommendations'} ), mimetype='application/json' )
+	query = "SELECT * from recipes where id in " + str(tuple(x))
+	cur = g.db.cursor()
+	cur.execute(query)
+
+	testRecipes =  cur.fetchall()
+
+	testRecipes = [{'id': recipe['id'], 'ingredients': '',
+					'name': recipe['name'], 'description': "Read the name"} for recipe in testRecipes]
+
+   	
+	return flask.Response( json.dumps( testRecipes ), mimetype='application/json' )
+
+
 
 @app.route('/recipes/training')
 def get_training_recipes():

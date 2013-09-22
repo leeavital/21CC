@@ -11,17 +11,13 @@ def main():
 	client = Client(api_id="2ecbff5a", api_key="a9e2794b097d6dfc3fef2e3afd81123e", timeout=TIMEOUT, retries=RETRIES)
 
 	keywords = {
-		'chicken': 30,
-		'eggs': 10,
-		'beef': 30,
-		'middle eastern': 30,
-		'italian': 30,
-		'chinese': 30,
-		'cookie': 10,
-		'cake': 15,
-		'pasta': 15,
-		'pizza': 10,
-		'roasted': 20
+		'japanese': 30,
+		'drink': 10,
+		'oven roasted': 30,
+		'fruit': 30,
+		'salad': 30,
+		'russian': 30,
+		'gameday': 10,
 		}
 	for keyword in keywords.keys():
 		print keyword
@@ -56,8 +52,10 @@ def process(recipe):
 	# 		print flavor + ": "+str(recipe.flavors[flavor])
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod", cursorclass=MySQLdb.cursors.DictCursor)
 	cur = db.cursor()
-	description = "YUM"
-	# description = get_description(recipe.source['sourceRecipeUrl'])
+
+
+	#  description = sr.getRecipe(recipe.source['sourceRecipeUrl'])
+	description = "woo"
 	if "cuisine" in recipe.attributes:
 		cuis = recipe.attributes['cuisine'][0]
 	else:
