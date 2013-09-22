@@ -176,6 +176,8 @@ TrainingCntl.$inject = [ '$scope', '$http', '$location' ];
 // ----------------------------------------------------------------------------
 function HomeCntl( $scope, $http, $location ){
    
+   
+    
    // populate inventory 
    $http.get( '/inventory' ).success( function( data ) {
 	  console.log( 'got inventory' );

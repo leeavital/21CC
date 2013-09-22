@@ -20,10 +20,16 @@
 </ul>
 </div>
 
-<div class="span5" ng-switch="recipes">
+<div class="span5" ng-switch="recommendations">
    <h3>Recommended Recipes</h3>   
    <p>Based on what you've told us, you'll like these recipes.</p>
    
+   <div ng-switch-when="undefined"
+	  <div class="progress progress-striped active">
+		 <div class="bar" style="width: 100%;"></div>
+	  </div>
+
+   </div>
     
     
    <ul ng-switch-default>

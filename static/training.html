@@ -1,5 +1,14 @@
 <ul class="span8">
    
+   <div ng-switch="recipes.length">
+	  <div ng-switch-when="0">
+		 Thanks for telling us what kind of food you like. Now see what 
+		 <a href="/#/home">recommendations</a> we've got for you
+	  </div>
+
+
+   </div>
+    
    <form ng-model="recipe" ng-if="!recipe.trained" ng-repeat="recipe in recipes"  ng-directive ng-animate=" 'animate' ">
 	  <h3>{{recipe.name}}</h3>
 	  {{recipe.description}}
