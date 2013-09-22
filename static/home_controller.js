@@ -1,12 +1,15 @@
+angular.module('deepLinking', ['ngAnimate']);
+
+
 angular.module( 'deepLinking', [] ).
    config( ['$routeProvider', function( $routeProvider ) {
 	  $routeProvider
-		 .when( '/welcome', {templateUrl: 'welcome.html', controller: WelcomeCntl} )
-		 .when( '/recipe/:recipeId', {templateUrl: 'recipe.html', controller: RecipeController} )
-		 .when( '/recommendations', {templateUrl: 'recommendations.html', controller: RecommendationController} )
-		 .when( '/users', {templateUrl: 'users.html', controller: UsersCntl} )
-		 .when( '/training', {templateUrl: 'training.html', controller: TrainingCntl} )
-		 .when( '/home', {templateUrl: 'home.html', controller: HomeCntl} );
+		 .when( '/welcome', {templateUrl: '/static/welcome.html', controller: WelcomeCntl} )
+		 .when( '/recipe/:recipeId', {templateUrl: '/static/recipe.html', controller: RecipeController} )
+		 .when( '/recommendations', {templateUrl: '/static/recommendations.html', controller: RecommendationController} )
+		 .when( '/users', {templateUrl: '/static/users.html', controller: UsersCntl} )
+		 .when( '/training', {templateUrl: '/static/training.html', controller: TrainingCntl} )
+		 .when( '/home', {templateUrl: '/static/home.html', controller: HomeCntl} );
    }]);
 
 
@@ -27,11 +30,15 @@ WelcomeCntl.$inject = [ '$scope', '$location' ];
 // ----------------------------------------------------------------------------
 function AppCntl( $scope, $location, $http ){
    
-   $http.get( '/current_user' ).success( function(){
-	  
+   $http.get( '/current_user' ).success( function( data, status, headers ){
+
+	  console.log( status );
+	  console.log( data );
+	  console.log( 'success' ); 
 	  $location.path( '/home' );
 
    }).error( function(){
+	  console.log( 'error' );
 	  $location.path( '/users' );
    });
    
@@ -89,6 +96,7 @@ function UsersCntl( $scope, $http, $location){
 		 
 		 if( response.status == "ok" ){
 			$location.path( '/home' );
+			$scope.current_user = loginName
 		 }else{
 			$scope.login_error = response.error;
 		 }
@@ -154,6 +162,7 @@ TrainingCntl.$inject = [ '$scope', '$http', '$location' ];
 
 function HomeCntl( $scope, $http, $location ){
    
+   // populate inventory 
    $http.get( '/inventory' ).success( function( data ) {
 	  console.log( 'got inventory' );
 	  $scope.inventory = data;
@@ -178,6 +187,24 @@ function HomeCntl( $scope, $http, $location ){
 		 return inv.item != itemname;
 	  });
    }	  
+
+   $scope.showRecipes = function(){
+	  var toShow = $scope.recommendations.filter( function( e ) {
+		 return e.selected;
+	  } );
+
+	  console.log( toShow );
+
+   }
+   
+   // populate recomendations
+   $http.get( '/recipes/recommendations' ).success( function( recs ){
+	  
+	  console.log( recs );
+	  $scope.recommendations = recs;  
+
+
+   });
    
 
 } // ent ctlt

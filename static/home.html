@@ -1,11 +1,36 @@
+<div class="span6">
+
+   <h3>What's in your pantry?</h3>
 <ul>
-   <li ng-repeat="inv in inventory">
+   <li style="list-style-type: none" ng-repeat="inv in inventory">
 	  {{inv.item}}
-	  <span class="btn btn-primary" ng-click="removeItem(inv.item) " href="#">Remove</span>
+	  <span class="icon-remove" ng-click="removeItem(inv.item) "  href="#"></span>
 	  <br />
 	  <br />
    </li>
    <form ng-submit="addToInventory( new_inventory )">
 	  <input type="text" ng-model="new_inventory" /> 
+	  <input type="submit" class="icon-plus-sign" style="height: 19px;
+													  width: 19px;
+													  color: transparent;
+	  												  background-color: transparent;
+	  												  border: 0;" />
    </form>
 </ul>
+</div>
+
+<div class="span5">
+   
+   <ul>
+   <li ng-repeat="rec in recommendations">
+	  {{rec.name}} <input type="checkbox" ng-model="rec.selected" />
+	  <br />
+	  <i>{{rec.desciption}}</i>	
+
+   </li>
+   </ul>
+
+	  <button ng-click="showRecipes()" class="btn-primary btn">See Recipes</button>
+	  
+
+</div>

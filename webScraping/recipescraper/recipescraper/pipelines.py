@@ -7,7 +7,7 @@ from scrapy.contrib.exporter import JsonLinesItemExporter
 
 class RecipescraperPipeline(object):
   def __init__(self):
-    self.files={}
+    self.file=open('recipes.jl','wb')
 
   @classmethod
   def from_crawler(cls,crawler):
@@ -17,15 +17,13 @@ class RecipescraperPipeline(object):
     return pipeline
 
   def spider_opened(self,spider):
-    file=open('%s_recipes.xml' %spider.name,'wb')
-    self.files[spider]=file
-    self.exporter=JsonLinesItemExporter(file)
+    self.exporter=JsonLinesItemExporter(self.file)
     self.exporter.start_exporting()
 
   def spider_closed(self,spider):
     self.exporter.finish_exporting()
-    file=self.files.pop(spider)
-    file.close()
+   # file=self.files.pop(spider)
+    self.file.close()
 
   def process_item(self, item, spider):
     self.exporter.export_item(item)

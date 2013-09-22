@@ -62,9 +62,11 @@ def teardown_request(exception):
 		db.close()
 
 
+app_text = open( "static/index.html" ).read() #wat
+
 @app.route('/')
 def homepage():
-	return "Welcome home!"
+	return app_text
 
 @app.route('/get_ingredients')
 def get_ingredients():
@@ -79,11 +81,26 @@ def get_ingredients():
 	return render_template('ingredients.html',  **{'ingredients': ingredients})
    
 
-@app.route('/user_ratings/<int:id>')
-def view_ratings(id):
+@app.route('/recipes/recommendations')
+def view_ratings():
 	import neural_net as nn
+	id = session['user_id']
 	x = nn.build_net_for_user(id, g.db)
-	return x
+	if x == False:
+		return flask.Response( json.dumps( {'message': 'Rate more recipes for recommendations'} ), mimetype='application/json' ), 418
+	query = "SELECT * from recipes where id in " + str(tuple(x))
+	cur = g.db.cursor()
+	cur.execute(query)
+
+	testRecipes =  cur.fetchall()
+
+	testRecipes = [{'id': recipe['id'], 'ingredients': '',
+					'name': recipe['name'], 'description': "Read the name"} for recipe in testRecipes]
+
+   	
+	return flask.Response( json.dumps( testRecipes ), mimetype='application/json' )
+
+
 
 @app.route('/recipes/training')
 def get_training_recipes():
@@ -142,15 +159,14 @@ def current_user():
    r_code = 200  
    d = {}
 
-   if "username" in session:
+   if "username" in session and "user_id" in session:
 	  d = {"username": session["username"]}
    else:
 	  d = {}
 	  r_code = 401 # unauthorized 401
 
    response = flask.jsonify( d )
-   response.headers[ "Status" ] = r_code 
-   return response
+   return response, r_code
 
 
 @app.route("/login", methods=["POST"])
@@ -178,9 +194,8 @@ def login():
 
 	   
    response = flask.jsonify( d )
-   response.headers["status"] = r_code
 
-   return response
+   return response, r_code
    
 
 @app.route("/user_create", methods=["POST"])

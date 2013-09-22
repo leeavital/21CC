@@ -1,22 +1,22 @@
-<form ng:submit="doLogin()">
+<form class="form-inline" ng:submit="doLogin()">
    <fieldset>
 	  <legend>Log In</legend>
-	  <input type="text" ng:model="login_name"  />
-	  <input type="password" ng:model="login_pass"  />
-	  <input type="submit" />
+	  <input placeholder="Your Name" type="text" ng:model="login_name"  required `/>
+	  <input placeholder="Password" type="password" ng:model="login_pass"  required />
+	  <input type="submit" class="btn-primary"  />
 	  <br />
 	  <div class="error">{{login_error}}</div>
    </fieldset> 
 </form>
 
 
-<form ng:submit="doSignUp()">
+<form class="form-inline" ng:submit="doSignUp()">
    <fieldset >
 	  <legend>Sign Up</legend>
-	  <input type="text" ng:model="signup_name"  />
-	  <input type="password" ng:model="signup_pass"  />
-	  <input type="password" ng:model="signup_pass2"  />
-	  <input type="submit" />
+	  <input placeholder="Your Name" type="text" ng:model="signup_name"  required />
+	  <input placeholder="Password" type="password" ng:model="signup_pass"  required />
+	  <input placeholder="Confirm Password" type="password" ng:model="signup_pass2"  required />
+	  <input type="submit" class="btn-primary" />
 
 	  <br />
 
