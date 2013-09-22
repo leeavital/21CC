@@ -96,6 +96,7 @@ function UsersCntl( $scope, $http, $location){
 		 
 		 if( response.status == "ok" ){
 			$location.path( '/home' );
+			$scope.current_user = loginName
 		 }else{
 			$scope.login_error = response.error;
 		 }

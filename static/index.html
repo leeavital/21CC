@@ -18,22 +18,20 @@
    <body>
 
 	  <div ng-controller="AppCntl"> 
-
-	 	 <div class="header">
-			<div class="container">
-			   <div class="span5" id="page-title"> 21st Century Cookbook</div>
-			   <div class="span5">{{current_user}}</div>
+	 	     <div class="navbar navbar-inverse navbar-fixed-top" style="height: 50px">
+			   <div class="navbar-inner">
+				  <div class="container">
+					 <h3 style="color: white">21CC</h3>
+				  </div>  
+			   </div>
 			</div>
-		 </div>
 		 
-		 <div class="container">	
+		 <div class="container" style="margin-top: 75px">	
 			<span class="partial-info">
 		 	   {{$route.current.template}}
    	  	 	</span>
    	  	 	<div ng-view></div>
 		 </div>
    	  </div>
-
    </body>
-
 </html>
