@@ -4,12 +4,12 @@ angular.module('deepLinking', ['ngAnimate']);
 angular.module( 'deepLinking', [] ).
    config( ['$routeProvider', function( $routeProvider ) {
 	  $routeProvider
-		 .when( '/welcome', {templateUrl: 'welcome.html', controller: WelcomeCntl} )
-		 .when( '/recipe/:recipeId', {templateUrl: 'recipe.html', controller: RecipeController} )
-		 .when( '/recommendations', {templateUrl: 'recommendations.html', controller: RecommendationController} )
-		 .when( '/users', {templateUrl: 'users.html', controller: UsersCntl} )
-		 .when( '/training', {templateUrl: 'training.html', controller: TrainingCntl} )
-		 .when( '/home', {templateUrl: 'home.html', controller: HomeCntl} );
+		 .when( '/welcome', {templateUrl: '/static/welcome.html', controller: WelcomeCntl} )
+		 .when( '/recipe/:recipeId', {templateUrl: '/static/recipe.html', controller: RecipeController} )
+		 .when( '/recommendations', {templateUrl: '/static/recommendations.html', controller: RecommendationController} )
+		 .when( '/users', {templateUrl: '/static/users.html', controller: UsersCntl} )
+		 .when( '/training', {templateUrl: '/static/training.html', controller: TrainingCntl} )
+		 .when( '/home', {templateUrl: '/static/home.html', controller: HomeCntl} );
    }]);
 
 

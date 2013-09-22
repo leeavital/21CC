@@ -62,9 +62,11 @@ def teardown_request(exception):
 		db.close()
 
 
+app_text = open( "static/index.html" ).read() #wat
+
 @app.route('/')
 def homepage():
-	return "Welcome home!"
+	return app_text
 
 @app.route('/get_ingredients')
 def get_ingredients():
