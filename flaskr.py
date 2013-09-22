@@ -295,7 +295,7 @@ def inventory_delete( item  ):
    g.db.commit()
    return flask.jsonify( {"status": "ok"} )
 
-@app.rout("/recipetiming")
+@app.route("/recipetiming")
 def get_timing(recipeList):
         query = """SElECT * FROM recipes where id = "{0}" """
         cur = g.db.cursor()
