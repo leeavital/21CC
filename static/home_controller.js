@@ -31,14 +31,14 @@ WelcomeCntl.$inject = [ '$scope', '$location' ];
 function AppCntl( $scope, $location, $http ){
    
    $http.get( '/current_user' ).success( function( data, status, headers ){
-
-	  console.log( status );
-	  console.log( data );
-	  console.log( 'success' ); 
-	  $location.path( '/home' );
+	  
+	  if( $location.path() == '' ){
+		 $location.path( '/home' );
+	  }else{
+		 // use whatever the user specified
+	  }
 
    }).error( function(){
-	  console.log( 'error' );
 	  $location.path( '/users' );
    });
    

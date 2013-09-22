@@ -21,8 +21,11 @@
 
 <div class="span5">
    
+   
+   <h3>Recommended Recipes</h3>   
+   <p>Based on what you've told us, you'll like these recipes.</p>
    <ul>
-   <li ng-repeat="rec in recommendations">
+   <li style="list-style-type: none" ng-repeat="rec in recommendations">
 	  {{rec.name}} <input type="checkbox" ng-model="rec.selected" />
 	  <br />
 	  <i>{{rec.desciption}}</i>	
