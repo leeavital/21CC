@@ -6,7 +6,7 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
 
-BOT_NAME = 'recipescraper'
+BOT_NAME = 'recipe_scraper'
 
 SPIDER_MODULES = ['recipescraper.spiders']
 NEWSPIDER_MODULE = 'recipescraper.spiders'

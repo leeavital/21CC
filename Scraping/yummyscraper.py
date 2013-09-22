@@ -63,7 +63,7 @@ def process(recipe):
 	cur.execute("SELECT COUNT(*) FROM recipes where name = '{0}' ".format(recipe['name']))
 	count = cur.fetchone()
 	if count['COUNT(*)'] == 0:
-		cur.execute("INSERT INTO recipes (name,votes,salty,sweet,spicy,savory,filling,cuisine, meal, sour) VALUES ('{0}','0','{1}','{2}','{3}','{4}','{5}','{6}', 'MAIN', '{7}')".format(recipe.name,recipe.flavors.salty,recipe.flavors.sweet,recipe.flavors.piquant,recipe.flavors.meaty,recipe.flavors.bitter,cuis, recipe.flavors.sour ))
+		cur.execute("INSERT INTO recipes (name,votes,salty,sweet,spicy,savory,filling,cuisine, meal, sour, cooktime, imageurl) VALUES ('{0}','0','{1}','{2}','{3}','{4}','{5}','{6}', 'MAIN', '{7}','{8}','{9}')".format(recipe.name,recipe.flavors.salty,recipe.flavors.sweet,recipe.flavors.piquant,recipe.flavors.meaty,recipe.flavors.bitter,cuis, recipe.flavors.sour, recipe.totalTime, recipe.images[0] ))
 		cur.execute("COMMIT")
 		cur.execute("SELECT id FROM recipes WHERE name = '{0}'".format(recipe.name))
 		recipeidnum = cur.fetchone()

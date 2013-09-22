@@ -3,7 +3,7 @@ from twisted.internet import reactor
 from scrapy.crawler import Crawler
 from scrapy.settings import Settings
 from scrapy import log, signals, project
-from recipescraper.spiders.recipe_spider import RecipeSpider
+from recipescraper.spiders.recipe_spider import Recipe_Spider
 from scrapy.xlib.pydispatch import dispatcher
 
 def stop_reactor():

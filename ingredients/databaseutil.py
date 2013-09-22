@@ -20,7 +20,7 @@ def createRecipes():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod")
 	cur = db.cursor()
 	cur.execute('DROP TABLE IF EXISTS recipes')
-	cur.execute('CREATE TABLE IF NOT EXISTS recipes (id INT AUTO_INCREMENT, name CHAR(255) UNIQUE, votes INT NOT NULL, salty FLOAT NOT NULL, sweet FLOAT NOT NULL, spicy FLOAT NOT NULL, savory FLOAT NOT NULL, filling FLOAT NOT NULL, cuisine CHAR(30) NOT NULL, meal CHAR(30) NOT NULL, sour FLOAT NOT NULL, PRIMARY KEY (id))')
+	cur.execute('CREATE TABLE IF NOT EXISTS recipes (id INT AUTO_INCREMENT, name CHAR(255) UNIQUE, votes INT NOT NULL, salty FLOAT NOT NULL, sweet FLOAT NOT NULL, spicy FLOAT NOT NULL, savory FLOAT NOT NULL, filling FLOAT NOT NULL, cuisine CHAR(30) NOT NULL, meal CHAR(30) NOT NULL, sour FLOAT NOT NULL, cooktime INT NOT NULL, imageurl TEXT, PRIMARY KEY (id))')
 
 def createUsers():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod")
@@ -41,8 +41,8 @@ def createRecipecombo():
 def createRecipeText():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod")
 	cur = db.cursor()
-	cur.execute('DROP TABLE IF EXITS recipetext')
-	cur.execute('CREATE TABLE IF NOT EXISTS recipetext (recipeid INT NOT NULL, recipetexts TEXT')
+	cur.execute('DROP TABLE IF EXISTS recipetext')
+	cur.execute('CREATE TABLE IF NOT EXISTS recipetext (recipeid INT NOT NULL, recipetexts TEXT)')
 def populate():
 	db = MySQLdb.connect(host="ec2-54-219-48-12.us-west-1.compute.amazonaws.com",user="test_user",passwd="mypass",db="prod", cursorclass=MySQLdb.cursors.DictCursor)
 	cur = db.cursor()
@@ -75,9 +75,10 @@ def main():
 	createRecipes()
 	createStrippedIngredients()
 	#createUsers()
-	createRatings()
-	createRecipecombo()
+	#createRatings()
+	#createRecipecombo()
 	#populate()
+	createRecipeText()
 	# SALTY SWEET SPICY SAVORY FILLING CUISINE
 
 main()
